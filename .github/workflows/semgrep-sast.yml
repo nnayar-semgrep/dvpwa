@@ -1,14 +1,19 @@
 on:
   workflow_dispatch:
-name: Semgrep SAST JSON OUTPUT
+name: Semgrep SAST JSON output
 jobs:
   semgrep:
     name: Scan
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     env:
       SEMGREP_APP_TOKEN: ${{ secrets.SEMGREP_APP_TOKEN }}
     container:
       image: semgrep/semgrep
     steps:
       - uses: actions/checkout@v4
-      - run: semgrep ci --json --json-output=dvwpa-findings.json
+      - run: semgrep ci --json --json-output=dvpwa-findings.json
+      - name: Upload Findings-JSON Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: dvpwa-findings.json
+          path: dvpwa-findings.json
